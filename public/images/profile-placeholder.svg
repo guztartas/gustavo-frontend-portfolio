@@ -1,0 +1,8 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1200" fill="#08182B"/>
+  <circle cx="310" cy="280" r="300" fill="#18D8B2" fill-opacity="0.25"/>
+  <circle cx="900" cy="220" r="290" fill="#FF8B5F" fill-opacity="0.22"/>
+  <circle cx="600" cy="610" r="250" fill="#16324D"/>
+  <rect x="330" y="860" width="540" height="250" rx="120" fill="#16324D"/>
+  <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" fill="#F6FBFF" font-size="210" font-family="Syne, sans-serif" letter-spacing="8">GT</text>
+</svg>
