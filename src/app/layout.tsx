@@ -30,28 +30,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const themeScript = `
+  const initScript = `
     (() => {
-      const THEME_KEY = "gt-theme";
       const LOCALE_KEY = "gt-locale";
-      const storedTheme = window.localStorage.getItem(THEME_KEY);
-      const preferredTheme = storedTheme === "light" || storedTheme === "dark" || storedTheme === "system" ? storedTheme : "system";
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      const resolvedTheme = preferredTheme === "system" ? systemTheme : preferredTheme;
-      document.documentElement.dataset.theme = resolvedTheme;
-      document.documentElement.dataset.themePreference = preferredTheme;
+      const THEME_KEY = "gt-theme";
       const storedLocale = window.localStorage.getItem(LOCALE_KEY);
       const browserLocale = window.navigator.language.toLowerCase().startsWith("pt") ? "pt-BR" : "en-US";
-      const resolvedLocale = storedLocale === "pt-BR" || storedLocale === "en-US" ? storedLocale : browserLocale;
-      document.documentElement.lang = resolvedLocale;
+      const locale = storedLocale === "pt-BR" || storedLocale === "en-US" ? storedLocale : browserLocale;
+      document.documentElement.lang = locale;
+      const storedTheme = window.localStorage.getItem(THEME_KEY);
+      const preference = storedTheme === "light" || storedTheme === "dark" || storedTheme === "system" ? storedTheme : "system";
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      const theme = preference === "system" ? systemTheme : preference;
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.dataset.themePreference = preference;
     })();
   `;
 
   return (
     <html lang="en-US" suppressHydrationWarning>
       <head>
-        <Script id="theme-and-locale-init" strategy="beforeInteractive">
-          {themeScript}
+        <Script id="gt-init-theme-and-locale" strategy="beforeInteractive">
+          {initScript}
         </Script>
       </head>
       <body className={`${bodyFont.variable} ${displayFont.variable} antialiased`}>{children}</body>

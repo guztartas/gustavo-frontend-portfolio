@@ -1,6 +1,6 @@
 # Gustavo Tartas Portfolio
 
-Portfolio pessoal em Next.js + Tailwind CSS com foco em frontend premium, animações de scroll e narrativa orientada a impacto de produto.
+Portfólio pessoal em Next.js + Tailwind CSS com foco em frontend premium, animações de scroll e narrativa orientada a impacto de produto.
 
 ## Stack
 
@@ -23,7 +23,7 @@ Portfolio pessoal em Next.js + Tailwind CSS com foco em frontend premium, anima�
 
 ## Checklist antes de enviar em entrevistas
 
-- Atualizar foto em `/public/images/profile.jpg`
-- Revisar links de contato no arquivo `/src/data/portfolio-data.ts`
+- Atualizar foto em `/public/images/profile.jpg` com versão em alta resolução
+- Revisar links de contato e repositórios em `/src/data/portfolio-data.ts`
 - Conferir se o PDF do currículo está atualizado em `/public/resume`
 - Rodar `npm run lint` e `npm run build`

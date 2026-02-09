@@ -1,35 +1,123 @@
+'use client';
+
 import { ProfilePhoto } from '@/components/profile-photo';
 import { ScrollEffects } from '@/components/scroll-effects';
-import { portfolioData } from '@/data/portfolio-data';
+import {
+  defaultLocale,
+  localeOptions,
+  portfolioDataByLocale,
+  themeOptions,
+  type Locale,
+  type ThemePreference,
+} from '@/data/portfolio-data';
 import type { CSSProperties } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+const LOCALE_STORAGE_KEY = 'gt-locale';
+const THEME_STORAGE_KEY = 'gt-theme';
+const THEME_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 
 const revealStyle = (delay: number) =>
   ({ '--reveal-delay': `${delay}ms` }) as CSSProperties;
 
-const navigationLinks = [
-  { href: '#impact', label: 'Impact' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#contact', label: 'Contact' },
-] as const;
-
 const sectionIntroClass = 'max-w-2xl space-y-4';
 
+const getSystemTheme = () =>
+  window.matchMedia(THEME_MEDIA_QUERY).matches ? 'dark' : 'light';
+
+const readInitialLocale = (): Locale => {
+  if (typeof window === 'undefined') {
+    return defaultLocale;
+  }
+
+  const rootLang = document.documentElement.lang;
+  if (rootLang === 'pt-BR' || rootLang === 'en-US') {
+    return rootLang;
+  }
+
+  const storedLocale = window.localStorage.getItem(LOCALE_STORAGE_KEY);
+  if (storedLocale === 'pt-BR' || storedLocale === 'en-US') {
+    return storedLocale;
+  }
+
+  return window.navigator.language.toLowerCase().startsWith('pt')
+    ? 'pt-BR'
+    : 'en-US';
+};
+
+const readInitialThemePreference = (): ThemePreference => {
+  if (typeof window === 'undefined') {
+    return 'system';
+  }
+
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+  if (
+    storedTheme === 'light' ||
+    storedTheme === 'dark' ||
+    storedTheme === 'system'
+  ) {
+    return storedTheme;
+  }
+
+  const rootPreference = document.documentElement.dataset.themePreference;
+  if (
+    rootPreference === 'light' ||
+    rootPreference === 'dark' ||
+    rootPreference === 'system'
+  ) {
+    return rootPreference;
+  }
+
+  return 'system';
+};
+
 export default function Home() {
-  const {
-    person,
-    summary,
-    metrics,
-    impact,
-    experiences,
-    skills,
-    languages,
-    contacts,
-  } = portfolioData;
+  const [locale, setLocale] = useState<Locale>(readInitialLocale);
+  const [themePreference, setThemePreference] = useState<ThemePreference>(
+    readInitialThemePreference,
+  );
+
+  const content =
+    portfolioDataByLocale[locale] ?? portfolioDataByLocale[defaultLocale];
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+    window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+  }, [locale]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(THEME_MEDIA_QUERY);
+
+    const applyTheme = () => {
+      const resolvedTheme =
+        themePreference === 'system' ? getSystemTheme() : themePreference;
+      document.documentElement.dataset.theme = resolvedTheme;
+      document.documentElement.dataset.themePreference = themePreference;
+    };
+
+    applyTheme();
+    window.localStorage.setItem(THEME_STORAGE_KEY, themePreference);
+
+    mediaQuery.addEventListener('change', applyTheme);
+
+    return () => {
+      mediaQuery.removeEventListener('change', applyTheme);
+    };
+  }, [themePreference]);
+
+  const navigationLinks = useMemo(
+    () => [
+      { href: '#impact', label: content.labels.navigation.impact },
+      { href: '#experience', label: content.labels.navigation.experience },
+      { href: '#skills', label: content.labels.navigation.skills },
+      { href: '#contact', label: content.labels.navigation.contact },
+    ],
+    [content.labels.navigation],
+  );
 
   return (
     <>
-      <ScrollEffects />
+      <ScrollEffects key={locale} />
 
       <main className='relative overflow-x-clip pb-20'>
         <div aria-hidden className='hero-orb hero-orb-left' />
@@ -43,7 +131,7 @@ export default function Home() {
                 GT
               </a>
 
-              <nav className='hidden items-center gap-6 md:flex'>
+              <nav className='hidden items-center gap-6 xl:flex'>
                 {navigationLinks.map((item) => (
                   <a key={item.href} href={item.href} className='nav-link'>
                     {item.label}
@@ -51,14 +139,59 @@ export default function Home() {
                 ))}
               </nav>
 
-              <a
-                href='/resume/cv.pdf'
-                className='nav-cta'
-                target='_blank'
-                rel='noreferrer'
-              >
-                Resume
-              </a>
+              <div className='nav-controls'>
+                <div
+                  className='control-group'
+                  role='group'
+                  aria-label={content.labels.controls.languageAriaLabel}
+                >
+                  {localeOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type='button'
+                      className={`control-button ${locale === option.value ? 'is-active' : ''}`}
+                      onClick={() => {
+                        setLocale(option.value);
+                      }}
+                    >
+                      {option.short}
+                    </button>
+                  ))}
+                </div>
+
+                <div
+                  className='control-group'
+                  role='group'
+                  aria-label={content.labels.controls.themeAriaLabel}
+                >
+                  {themeOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      type='button'
+                      className={`control-button ${themePreference === option.value ? 'is-active' : ''}`}
+                      onClick={() => {
+                        setThemePreference(option.value);
+                      }}
+                    >
+                      {option.value === 'system' &&
+                        content.labels.controls.theme.system}
+                      {option.value === 'light' &&
+                        content.labels.controls.theme.light}
+                      {option.value === 'dark' &&
+                        content.labels.controls.theme.dark}
+                    </button>
+                  ))}
+                </div>
+
+                <a
+                  href='/resume/cv.pdf'
+                  className='nav-cta'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {content.labels.navigation.resume}
+                </a>
+              </div>
             </div>
           </div>
         </header>
@@ -68,17 +201,19 @@ export default function Home() {
             <div className='grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center'>
               <div className='space-y-8'>
                 <div className='eyebrow' data-reveal style={revealStyle(100)}>
-                  {person.role} • {person.location}
+                  {content.person.role} • {content.person.location}
                 </div>
 
                 <div className='space-y-6' data-reveal style={revealStyle(170)}>
                   <h1 className='display-font text-4xl leading-tight tracking-tight text-[var(--text-primary)] sm:text-5xl lg:text-7xl'>
-                    <span className='text-gradient'>Frontend precision.</span>
+                    <span className='text-gradient'>
+                      {content.labels.hero.headlineAccent}
+                    </span>
                     <br />
-                    Commerce outcomes at scale.
+                    {content.labels.hero.headlineBase}
                   </h1>
                   <p className='max-w-2xl text-base leading-relaxed text-[var(--text-muted)] sm:text-lg'>
-                    {person.tagline}
+                    {content.person.tagline}
                   </p>
                 </div>
 
@@ -87,7 +222,7 @@ export default function Home() {
                   data-reveal
                   style={revealStyle(230)}
                 >
-                  {summary}
+                  {content.summary}
                 </p>
 
                 <div
@@ -96,7 +231,7 @@ export default function Home() {
                   style={revealStyle(290)}
                 >
                   <a href='#contact' className='primary-cta'>
-                    Let&apos;s Build Together
+                    {content.labels.hero.primaryCta}
                   </a>
                   <a
                     href='/resume/cv.pdf'
@@ -104,7 +239,7 @@ export default function Home() {
                     target='_blank'
                     rel='noreferrer'
                   >
-                    Download Resume
+                    {content.labels.hero.secondaryCta}
                   </a>
                 </div>
 
@@ -114,7 +249,7 @@ export default function Home() {
                   style={revealStyle(340)}
                 >
                   <a
-                    href={contacts.github}
+                    href={content.contacts.github}
                     target='_blank'
                     rel='noreferrer'
                     className='chip-link'
@@ -122,14 +257,17 @@ export default function Home() {
                     GitHub
                   </a>
                   <a
-                    href={contacts.linkedin}
+                    href={content.contacts.linkedin}
                     target='_blank'
                     rel='noreferrer'
                     className='chip-link'
                   >
                     LinkedIn
                   </a>
-                  <a href={`mailto:${contacts.email}`} className='chip-link'>
+                  <a
+                    href={`mailto:${content.contacts.email}`}
+                    className='chip-link'
+                  >
                     Email
                   </a>
                 </div>
@@ -146,7 +284,7 @@ export default function Home() {
               data-reveal
               style={revealStyle(160)}
             >
-              {metrics.map((metric, index) => (
+              {content.metrics.map((metric, index) => (
                 <article
                   key={metric.label}
                   className='metric-card'
@@ -167,14 +305,14 @@ export default function Home() {
               data-reveal
               style={revealStyle(100)}
             >
-              <p className='section-tag'>Highlighted work</p>
+              <p className='section-tag'>{content.labels.sections.impactTag}</p>
               <h2 className='display-font text-3xl leading-tight sm:text-4xl'>
-                Selected impact across enterprise commerce products
+                {content.labels.sections.impactTitle}
               </h2>
             </div>
 
             <div className='impact-grid mt-12'>
-              {impact.map((item, index) => (
+              {content.impact.map((item, index) => (
                 <article
                   key={item.title}
                   className='impact-card'
@@ -199,14 +337,16 @@ export default function Home() {
               data-reveal
               style={revealStyle(100)}
             >
-              <p className='section-tag'>Career timeline</p>
+              <p className='section-tag'>
+                {content.labels.sections.experienceTag}
+              </p>
               <h2 className='display-font text-3xl leading-tight sm:text-4xl'>
-                Experience shaping high-traffic products
+                {content.labels.sections.experienceTitle}
               </h2>
             </div>
 
             <div className='timeline mt-14'>
-              {experiences.map((job, index) => (
+              {content.experiences.map((job, index) => (
                 <article
                   key={`${job.company}-${job.period}`}
                   className='timeline-item'
@@ -256,14 +396,14 @@ export default function Home() {
               data-reveal
               style={revealStyle(100)}
             >
-              <p className='section-tag'>Toolkit</p>
+              <p className='section-tag'>{content.labels.sections.skillsTag}</p>
               <h2 className='display-font text-3xl leading-tight sm:text-4xl'>
-                Frontend-first stack with fullstack depth
+                {content.labels.sections.skillsTitle}
               </h2>
             </div>
 
             <div className='skills-grid mt-12'>
-              {skills.map((group, index) => (
+              {content.skills.map((group, index) => (
                 <article
                   key={group.title}
                   className='skill-group'
@@ -285,9 +425,11 @@ export default function Home() {
             </div>
 
             <div className='mt-12' data-reveal style={revealStyle(380)}>
-              <p className='section-tag'>Languages</p>
+              <p className='section-tag'>
+                {content.labels.sections.languagesTag}
+              </p>
               <ul className='language-list'>
-                {languages.map((language) => (
+                {content.languages.map((language) => (
                   <li key={language}>{language}</li>
                 ))}
               </ul>
@@ -299,14 +441,14 @@ export default function Home() {
           <div className='container'>
             <div className='contact-panel' data-reveal style={revealStyle(120)}>
               <div className='space-y-5'>
-                <p className='section-tag'>Open to opportunities</p>
+                <p className='section-tag'>
+                  {content.labels.sections.contactTag}
+                </p>
                 <h2 className='display-font text-3xl leading-tight sm:text-5xl'>
-                  Let&apos;s build products users remember
+                  {content.labels.sections.contactTitle}
                 </h2>
                 <p className='max-w-xl text-base text-[var(--text-muted)]'>
-                  Available for senior frontend and fullstack opportunities
-                  focused on product impact, performance, and scalable
-                  architecture.
+                  {content.labels.sections.contactSummary}
                 </p>
               </div>
 
@@ -316,37 +458,40 @@ export default function Home() {
                 style={revealStyle(180)}
               >
                 <a
-                  href={contacts.whatsapp}
+                  href={content.contacts.whatsapp}
                   target='_blank'
                   rel='noreferrer'
                   className='contact-item'
                 >
-                  WhatsApp
-                </a>
-                <a href={`mailto:${contacts.email}`} className='contact-item'>
-                  {contacts.email}
+                  {content.labels.contacts.whatsapp}
                 </a>
                 <a
-                  href={`tel:${contacts.phone.replace(/\s+/g, '')}`}
+                  href={`mailto:${content.contacts.email}`}
                   className='contact-item'
                 >
-                  {contacts.phone}
+                  {content.contacts.email}
                 </a>
                 <a
-                  href={contacts.linkedin}
+                  href={`tel:${content.contacts.phone.replace(/\s+/g, '')}`}
+                  className='contact-item'
+                >
+                  {content.contacts.phone}
+                </a>
+                <a
+                  href={content.contacts.linkedin}
                   target='_blank'
                   rel='noreferrer'
                   className='contact-item'
                 >
-                  LinkedIn Profile
+                  {content.labels.contacts.linkedIn}
                 </a>
                 <a
-                  href={contacts.github}
+                  href={content.contacts.github}
                   target='_blank'
                   rel='noreferrer'
                   className='contact-item'
                 >
-                  GitHub Portfolio
+                  {content.labels.contacts.github}
                 </a>
               </div>
             </div>
