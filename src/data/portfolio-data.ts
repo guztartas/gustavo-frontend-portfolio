@@ -234,5 +234,6 @@ export const portfolioData = {
     phone: '+55 54 9 9246 0762',
     github: 'https://github.com/guztartas',
     linkedin: 'https://www.linkedin.com/in/gustavo-tartas/',
+    whatsapp: 'https://wa.me/5554992460762',
   },
 } as const;
