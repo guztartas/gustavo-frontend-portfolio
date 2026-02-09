@@ -52,7 +52,7 @@ export default function Home() {
               </nav>
 
               <a
-                href='/resume/Gustavo_Tartas_updated.pdf'
+                href='/resume/cv.pdf'
                 className='nav-cta'
                 target='_blank'
                 rel='noreferrer'
@@ -99,7 +99,7 @@ export default function Home() {
                     Let&apos;s Build Together
                   </a>
                   <a
-                    href='/resume/Gustavo_Tartas_updated.pdf'
+                    href='/resume/cv.pdf'
                     className='secondary-cta'
                     target='_blank'
                     rel='noreferrer'
