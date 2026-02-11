@@ -28,9 +28,17 @@ export type SkillGroup = {
   items: string[];
 };
 
+export type Recommendation = {
+  name: string;
+  role: string;
+  relation: string;
+  quote: string;
+};
+
 export type PortfolioLabels = {
   navigation: {
     impact: string;
+    recommendations: string;
     experience: string;
     skills: string;
     contact: string;
@@ -45,6 +53,9 @@ export type PortfolioLabels = {
   sections: {
     impactTag: string;
     impactTitle: string;
+    recommendationsTag: string;
+    recommendationsTitle: string;
+    recommendationsSource: string;
     experienceTag: string;
     experienceTitle: string;
     skillsTag: string;
@@ -84,6 +95,7 @@ export type PortfolioLocaleData = {
   summary: string;
   metrics: Metric[];
   impact: Impact[];
+  recommendations: Recommendation[];
   experiences: Experience[];
   skills: SkillGroup[];
   languages: string[];
@@ -322,6 +334,110 @@ const experiencesPt: Experience[] = [
   },
 ];
 
+const recommendationsEn: Recommendation[] = [
+  {
+    name: 'Tyler Butler',
+    role: 'Software Engineer 2 at The Home Depot',
+    relation: 'Worked with Gustavo on the same team',
+    quote:
+      'Innovative, dedicated, and collaborative. Gustavo consistently delivered customer-facing React features with high quality and strong engineering rigor.',
+  },
+  {
+    name: 'Mike Kerfeld',
+    role: 'Sr. Product Manager at The Home Depot',
+    relation: 'Partnered cross-functionally with Gustavo',
+    quote:
+      'Gustavo showed up every day ready to contribute. He produced not only solid software but also technical guidance when challenges came up.',
+  },
+  {
+    name: 'Haile Lakew',
+    role: 'Senior Software Engineer',
+    relation: 'Worked with Gustavo on the same team',
+    quote:
+      'He was lightning fast onboarding into complex tasks and helped improve quality and delivery speed while increasing team capacity.',
+  },
+  {
+    name: 'George Guffey',
+    role: 'Senior Software Engineer at The Home Depot',
+    relation: 'Worked with Gustavo on the same team',
+    quote:
+      'Working with Gustavo was a pleasure. He communicates clearly, learns quickly, and provides valuable input in technical decision-making.',
+  },
+  {
+    name: 'Grazielli Padilha Vieira',
+    role: 'Tech Recruiter | Talent Acquisition',
+    relation: 'Hired Gustavo for a major project',
+    quote:
+      "Throughout the process, Gustavo showed commitment, professionalism, and strong frontend ownership with a consistent growth mindset.",
+  },
+  {
+    name: 'Junior Maran',
+    role: 'Frontend Software Engineer',
+    relation: 'Worked with Gustavo on the same team',
+    quote:
+      "A dedicated professional, always willing to support colleagues and share knowledge. His quality standard stood out on every delivery.",
+  },
+  {
+    name: 'Mateus Badalotti',
+    role: 'Senior Software Engineer',
+    relation: 'Collaborated in multiple projects',
+    quote:
+      "Gustavo demonstrates proactivity, adaptability, and teamwork. He communicates effectively and keeps evolving with every challenge.",
+  },
+];
+
+const recommendationsPt: Recommendation[] = [
+  {
+    name: 'Tyler Butler',
+    role: 'Software Engineer 2 no The Home Depot',
+    relation: 'Trabalhou com Gustavo no mesmo time',
+    quote:
+      'Inovador, dedicado e colaborativo. O Gustavo entregou features em React com qualidade alta e rigor de engenharia constante.',
+  },
+  {
+    name: 'Mike Kerfeld',
+    role: 'Sr. Product Manager no The Home Depot',
+    relation: 'Atuação conjunta em produto e engenharia',
+    quote:
+      'Gustavo chegava todos os dias pronto para contribuir. Além de código sólido, também trazia direcionamento técnico quando surgiam desafios.',
+  },
+  {
+    name: 'Haile Lakew',
+    role: 'Senior Software Engineer',
+    relation: 'Trabalhou com Gustavo no mesmo time',
+    quote:
+      'Teve onboarding muito rápido em tarefas complexas e ajudou o time a melhorar qualidade, velocidade de entrega e capacidade técnica.',
+  },
+  {
+    name: 'George Guffey',
+    role: 'Senior Software Engineer no The Home Depot',
+    relation: 'Trabalhou com Gustavo no mesmo time',
+    quote:
+      'Trabalhar com Gustavo foi um prazer. Comunicação forte, aprendizado rápido e contribuições valiosas em decisões técnicas.',
+  },
+  {
+    name: 'Grazielli Padilha Vieira',
+    role: 'Tech Recruiter | Talent Acquisition',
+    relation: 'Responsável pela contratação de Gustavo',
+    quote:
+      'Durante todo o processo, Gustavo demonstrou profissionalismo, compromisso e forte responsabilidade técnica no frontend.',
+  },
+  {
+    name: 'Junior Maran',
+    role: 'Frontend Software Engineer',
+    relation: 'Trabalhou com Gustavo no mesmo time',
+    quote:
+      'Profissional dedicado, sempre disposto a apoiar colegas e compartilhar conhecimento. O padrão de qualidade nas entregas sempre se destacou.',
+  },
+  {
+    name: 'Mateus Badalotti',
+    role: 'Senior Software Engineer',
+    relation: 'Colaboração em múltiplos projetos',
+    quote:
+      'Demonstra proatividade, adaptabilidade e ótimo trabalho em equipe. Evolui de forma consistente e comunica com muita clareza.',
+  },
+];
+
 export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
   'en-US': {
     person: {
@@ -367,7 +483,36 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
         result:
           'Expanded remote sales capacity with faster conversion outside physical stores.',
       },
+      {
+        title: 'Cyberattack recovery support at Renner (2021)',
+        description:
+          'Worked directly on the project during the incident, supporting frontend stabilization and prioritizing critical deliveries for a safe recovery.',
+        result:
+          'Helped restore operational stability and keep the digital experience running under high pressure.',
+      },
+      {
+        title: 'End-to-end frontend leadership (2023-2024)',
+        description:
+          'Acted as one of the frontend leads throughout the full project lifecycle, from technical direction at kickoff to final delivery.',
+        result:
+          'Sustained architectural consistency, delivery predictability, and release quality across the squad.',
+      },
+      {
+        title: 'Legacy-to-modern stack migrations',
+        description:
+          'Strong experience refactoring and transitioning legacy systems, including migrations from jQuery to React and from Java to Node.js with a BFF layer.',
+        result:
+          'Reduced maintenance complexity and enabled faster product evolution with modern frontend and backend patterns.',
+      },
+      {
+        title: 'Performance optimization and rendering efficiency',
+        description:
+          'Led performance refactors using memoization, useCallback, code splitting, and rendering review to improve runtime efficiency.',
+        result:
+          'Improved LCP, reduced CLS, and delivered faster, more stable user experiences.',
+      },
     ],
+    recommendations: recommendationsEn,
     experiences: experiencesEn,
     skills: [
       {
@@ -426,6 +571,7 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
     labels: {
       navigation: {
         impact: 'Impact',
+        recommendations: 'Recommendations',
         experience: 'Experience',
         skills: 'Skills',
         contact: 'Contact',
@@ -440,6 +586,11 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
       sections: {
         impactTag: 'Highlighted work',
         impactTitle: 'Selected impact across enterprise commerce products',
+        recommendationsTag: 'Peer feedback',
+        recommendationsTitle:
+          'Recommendations from teammates, leaders, and hiring partners',
+        recommendationsSource:
+          'All recommendations in this section are also available on my LinkedIn profile.',
         experienceTag: 'Career timeline',
         experienceTitle: 'Experience shaping high-traffic products',
         skillsTag: 'Toolkit',
@@ -520,7 +671,36 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
         result:
           'Expandiu a capacidade de venda remota com conversão mais rápida fora das lojas físicas.',
       },
+      {
+        title: 'Recuperação pós-ataque cibernético na Renner (2021)',
+        description:
+          'Atuei diretamente no projeto durante o incidente, apoiando a estabilização do frontend e a priorização de entregas críticas para uma retomada segura.',
+        result:
+          'Contribuí para a recuperação operacional e para a continuidade da experiência digital em um cenário de alta pressão.',
+      },
+      {
+        title: 'Liderança de frontend de ponta a ponta (2023-2024)',
+        description:
+          'Fui uma das lideranças de frontend durante todo o ciclo do projeto, da direção técnica no início até o fechamento das entregas.',
+        result:
+          'Mantive consistência de arquitetura, previsibilidade de entrega e qualidade nas releases do time.',
+      },
+      {
+        title: 'Migração de stack legada para moderna',
+        description:
+          'Experiência sólida em refatorações e transições de tecnologias antigas para novas, incluindo migrações de jQuery para React e de Java para Node.js com camada BFF.',
+        result:
+          'Reduziu complexidade de manutenção e acelerou a evolução funcional do produto.',
+      },
+      {
+        title: 'Otimização de performance e eficiência de renderização',
+        description:
+          'Conduzi refatorações com memoização, useCallback, code splitting e revisão de renderização para elevar a eficiência do frontend.',
+        result:
+          'Melhoria de LCP, redução de CLS e ganhos visíveis de velocidade e estabilidade.',
+      },
     ],
+    recommendations: recommendationsPt,
     experiences: experiencesPt,
     skills: [
       {
@@ -579,6 +759,7 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
     labels: {
       navigation: {
         impact: 'Impacto',
+        recommendations: 'Indicações',
         experience: 'Experiência',
         skills: 'Skills',
         contact: 'Contato',
@@ -593,6 +774,11 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
       sections: {
         impactTag: 'Trabalhos em destaque',
         impactTitle: 'Impacto selecionado em produtos enterprise de e-commerce',
+        recommendationsTag: 'Feedback de pares',
+        recommendationsTitle:
+          'Indicações de colegas, lideranças e parceiros de contratação',
+        recommendationsSource:
+          'Todas as indicações desta seção também estão disponíveis no meu perfil do LinkedIn.',
         experienceTag: 'Linha do tempo',
         experienceTitle: 'Experiência em produtos de alto tráfego',
         skillsTag: 'Ferramentas',

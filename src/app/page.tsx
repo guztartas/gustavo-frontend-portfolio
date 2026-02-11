@@ -11,19 +11,79 @@ import {
   type ThemePreference,
 } from '@/data/portfolio-data';
 import type { CSSProperties } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 
 const LOCALE_STORAGE_KEY = 'gt-locale';
 const THEME_STORAGE_KEY = 'gt-theme';
 const THEME_MEDIA_QUERY = '(prefers-color-scheme: dark)';
+const TABLET_MIN_WIDTH = 760;
+const DESKTOP_MIN_WIDTH = 1200;
+const MOBILE_VISIBLE_CARDS = 1;
+const TABLET_VISIBLE_CARDS = 2;
+const DESKTOP_VISIBLE_CARDS = 3;
+const IMPACT_AUTOPLAY_MS = 6400;
+const RECOMMENDATION_AUTOPLAY_MS = 6500;
+const CAROUSEL_SLIDE_OFFSET_PERCENTAGE = 100;
 
 const revealStyle = (delay: number) =>
   ({ '--reveal-delay': `${delay}ms` }) as CSSProperties;
 
 const sectionIntroClass = 'max-w-2xl space-y-4';
 
+const getInitials = (name: string) =>
+  name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((item) => item[0]?.toUpperCase() ?? '')
+    .join('');
+
 const getSystemTheme = () =>
   window.matchMedia(THEME_MEDIA_QUERY).matches ? 'dark' : 'light';
+
+const subscribeViewport = (callback: () => void) => {
+  if (typeof window === 'undefined') {
+    return () => undefined;
+  }
+
+  window.addEventListener('resize', callback);
+  return () => {
+    window.removeEventListener('resize', callback);
+  };
+};
+
+const getViewportSnapshot = () =>
+  typeof window === 'undefined' ? 0 : window.innerWidth;
+
+const getServerViewportSnapshot = () => 0;
+
+const getVisibleCards = (viewportWidth: number) => {
+  if (viewportWidth >= DESKTOP_MIN_WIDTH) {
+    return DESKTOP_VISIBLE_CARDS;
+  }
+
+  if (viewportWidth >= TABLET_MIN_WIDTH) {
+    return TABLET_VISIBLE_CARDS;
+  }
+
+  return MOBILE_VISIBLE_CARDS;
+};
+
+const CarouselArrowIcon = ({ direction }: { direction: 'left' | 'right' }) => (
+  <svg
+    viewBox='0 0 24 24'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+    className='carousel-arrow-icon'
+    aria-hidden
+  >
+    {direction === 'left' ? (
+      <path d='M15 6L9 12L15 18' />
+    ) : (
+      <path d='M9 6L15 12L9 18' />
+    )}
+  </svg>
+);
 
 const readInitialLocale = (): Locale => {
   if (typeof window === 'undefined') {
@@ -76,9 +136,70 @@ export default function Home() {
   const [themePreference, setThemePreference] = useState<ThemePreference>(
     readInitialThemePreference,
   );
+  const [impactIndex, setImpactIndex] = useState(0);
+  const [recommendationIndex, setRecommendationIndex] = useState(0);
+  const viewportWidth = useSyncExternalStore(
+    subscribeViewport,
+    getViewportSnapshot,
+    getServerViewportSnapshot,
+  );
 
   const content =
     portfolioDataByLocale[locale] ?? portfolioDataByLocale[defaultLocale];
+  const visibleCards = getVisibleCards(viewportWidth);
+  const impactCount = content.impact.length;
+  const impactVisibleCards = Math.min(
+    visibleCards,
+    Math.max(impactCount, MOBILE_VISIBLE_CARDS),
+  );
+  const impactMaxIndex = Math.max(impactCount - impactVisibleCards, 0);
+  const hasImpactCarousel = impactMaxIndex > 0;
+  const activeImpactIndex = Math.min(impactIndex, impactMaxIndex);
+  const impactStepPercentage =
+    CAROUSEL_SLIDE_OFFSET_PERCENTAGE / impactVisibleCards;
+  const impactDotIndexes =
+    impactCount === 0
+      ? []
+      : Array.from({ length: impactMaxIndex + 1 }, (_, index) => index);
+  const recommendationCount = content.recommendations.length;
+  const recommendationVisibleCards = Math.min(
+    visibleCards,
+    Math.max(recommendationCount, MOBILE_VISIBLE_CARDS),
+  );
+  const recommendationMaxIndex = Math.max(
+    recommendationCount - recommendationVisibleCards,
+    0,
+  );
+  const hasRecommendationCarousel = recommendationMaxIndex > 0;
+  const activeRecommendationIndex = Math.min(
+    recommendationIndex,
+    recommendationMaxIndex,
+  );
+  const recommendationStepPercentage =
+    CAROUSEL_SLIDE_OFFSET_PERCENTAGE / recommendationVisibleCards;
+  const recommendationDotIndexes =
+    recommendationCount === 0
+      ? []
+      : Array.from({ length: recommendationMaxIndex + 1 }, (_, index) => index);
+
+  const carouselControls =
+    locale === 'pt-BR'
+      ? {
+          previousImpact: 'Highlight anterior',
+          nextImpact: 'Próximo highlight',
+          goToImpact: 'Ir para highlight',
+          previousRecommendation: 'Indicação anterior',
+          nextRecommendation: 'Próxima indicação',
+          goToRecommendation: 'Ir para indicação',
+        }
+      : {
+          previousImpact: 'Previous highlight',
+          nextImpact: 'Next highlight',
+          goToImpact: 'Go to highlight',
+          previousRecommendation: 'Previous recommendation',
+          nextRecommendation: 'Next recommendation',
+          goToRecommendation: 'Go to recommendation',
+        };
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -105,9 +226,47 @@ export default function Home() {
     };
   }, [themePreference]);
 
+  useEffect(() => {
+    if (!hasImpactCarousel) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setImpactIndex((currentIndex) => {
+        const boundedIndex = Math.min(currentIndex, impactMaxIndex);
+        return boundedIndex >= impactMaxIndex ? 0 : boundedIndex + 1;
+      });
+    }, IMPACT_AUTOPLAY_MS);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [hasImpactCarousel, impactMaxIndex]);
+
+  useEffect(() => {
+    if (!hasRecommendationCarousel) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setRecommendationIndex((currentIndex) => {
+        const boundedIndex = Math.min(currentIndex, recommendationMaxIndex);
+        return boundedIndex >= recommendationMaxIndex ? 0 : boundedIndex + 1;
+      });
+    }, RECOMMENDATION_AUTOPLAY_MS);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [hasRecommendationCarousel, recommendationMaxIndex]);
+
   const navigationLinks = useMemo(
     () => [
       { href: '#impact', label: content.labels.navigation.impact },
+      {
+        href: '#recommendations',
+        label: content.labels.navigation.recommendations,
+      },
       { href: '#experience', label: content.labels.navigation.experience },
       { href: '#skills', label: content.labels.navigation.skills },
       { href: '#contact', label: content.labels.navigation.contact },
@@ -311,21 +470,253 @@ export default function Home() {
               </h2>
             </div>
 
-            <div className='impact-grid mt-12'>
-              {content.impact.map((item, index) => (
-                <article
-                  key={item.title}
-                  className='impact-card'
-                  data-reveal
-                  style={revealStyle(170 + index * 110)}
+            <div className='mt-12'>
+              <div
+                className='impact-carousel-shell'
+                data-reveal
+                style={
+                  {
+                    ...revealStyle(170),
+                    '--carousel-visible-cards': impactVisibleCards,
+                  } as CSSProperties
+                }
+              >
+                <div className='impact-carousel-viewport'>
+                  <div
+                    className='impact-carousel-track'
+                    style={{
+                      transform: `translateX(-${activeImpactIndex * impactStepPercentage}%)`,
+                    }}
+                  >
+                    {content.impact.map((item) => (
+                      <article key={item.title} className='impact-slide'>
+                        <div className='impact-slide-card'>
+                          <h3 className='display-font text-2xl text-[var(--text-primary)]'>
+                            {item.title}
+                          </h3>
+                          <p className='impact-description'>
+                            {item.description}
+                          </p>
+                          <p className='impact-result'>{item.result}</p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+
+                <div className='carousel-controls'>
+                  <button
+                    type='button'
+                    className='carousel-arrow'
+                    aria-label={carouselControls.previousImpact}
+                    onClick={() => {
+                      if (impactCount === 0) {
+                        return;
+                      }
+
+                      setImpactIndex(
+                        (currentIndex) => {
+                          const boundedIndex = Math.min(
+                            currentIndex,
+                            impactMaxIndex,
+                          );
+                          return boundedIndex <= 0
+                            ? impactMaxIndex
+                            : boundedIndex - 1;
+                        },
+                      );
+                    }}
+                    disabled={!hasImpactCarousel}
+                  >
+                    <CarouselArrowIcon direction='left' />
+                  </button>
+
+                  <div className='carousel-dots'>
+                    {impactDotIndexes.map((index) => (
+                      <button
+                        key={`impact-dot-${index}`}
+                        type='button'
+                        className={`carousel-dot ${activeImpactIndex === index ? 'is-active' : ''}`}
+                        aria-label={`${carouselControls.goToImpact} ${index + 1}`}
+                        onClick={() => {
+                          setImpactIndex(index);
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    type='button'
+                    className='carousel-arrow'
+                    aria-label={carouselControls.nextImpact}
+                    onClick={() => {
+                      if (impactCount === 0) {
+                        return;
+                      }
+
+                      setImpactIndex(
+                        (currentIndex) => {
+                          const boundedIndex = Math.min(
+                            currentIndex,
+                            impactMaxIndex,
+                          );
+                          return boundedIndex >= impactMaxIndex
+                            ? 0
+                            : boundedIndex + 1;
+                        },
+                      );
+                    }}
+                    disabled={!hasImpactCarousel}
+                  >
+                    <CarouselArrowIcon direction='right' />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id='recommendations'>
+          <div className='container'>
+            <div
+              className={sectionIntroClass}
+              data-reveal
+              style={revealStyle(100)}
+            >
+              <p className='section-tag'>
+                {content.labels.sections.recommendationsTag}
+              </p>
+              <h2 className='display-font text-3xl leading-tight sm:text-4xl'>
+                {content.labels.sections.recommendationsTitle}
+              </h2>
+              <p className='max-w-2xl text-sm leading-relaxed text-[var(--text-subtle)] sm:text-base'>
+                {content.labels.sections.recommendationsSource}{' '}
+                <a
+                  href={content.contacts.linkedin}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='font-medium text-[var(--accent-cyan)] underline decoration-transparent underline-offset-4 transition-colors hover:decoration-current'
                 >
-                  <h3 className='display-font text-2xl text-[var(--text-primary)]'>
-                    {item.title}
-                  </h3>
-                  <p className='impact-description'>{item.description}</p>
-                  <p className='impact-result'>{item.result}</p>
-                </article>
-              ))}
+                  LinkedIn
+                </a>
+              </p>
+            </div>
+
+            <div
+              className='recommendations-shell mt-12'
+              data-reveal
+              style={
+                {
+                  ...revealStyle(160),
+                  '--carousel-visible-cards': recommendationVisibleCards,
+                } as CSSProperties
+              }
+            >
+              <div className='recommendations-viewport'>
+                <div
+                  className='recommendations-track'
+                  style={{
+                    transform: `translateX(-${activeRecommendationIndex * recommendationStepPercentage}%)`,
+                  }}
+                >
+                  {content.recommendations.map((recommendation) => (
+                    <article
+                      key={`${recommendation.name}-${recommendation.role}`}
+                      className='recommendation-slide'
+                    >
+                      <div className='recommendation-slide-card'>
+                        <p className='recommendation-quote'>
+                          {recommendation.quote}
+                        </p>
+                        <div className='recommendation-footer'>
+                          <div className='recommendation-avatar'>
+                            {getInitials(recommendation.name)}
+                          </div>
+                          <div className='recommendation-meta'>
+                            <p className='recommendation-name'>
+                              {recommendation.name}
+                            </p>
+                            <p className='recommendation-role'>
+                              {recommendation.role}
+                            </p>
+                            <p className='recommendation-relation'>
+                              {recommendation.relation}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+
+              <div className='carousel-controls'>
+                <button
+                  type='button'
+                  className='carousel-arrow'
+                  aria-label={carouselControls.previousRecommendation}
+                  onClick={() => {
+                    if (recommendationCount === 0) {
+                      return;
+                    }
+
+                    setRecommendationIndex(
+                      (currentIndex) => {
+                        const boundedIndex = Math.min(
+                          currentIndex,
+                          recommendationMaxIndex,
+                        );
+                        return boundedIndex <= 0
+                          ? recommendationMaxIndex
+                          : boundedIndex - 1;
+                      },
+                    );
+                  }}
+                  disabled={!hasRecommendationCarousel}
+                >
+                  <CarouselArrowIcon direction='left' />
+                </button>
+
+                <div className='carousel-dots'>
+                  {recommendationDotIndexes.map((index) => (
+                    <button
+                      key={`recommendation-dot-${index}`}
+                      type='button'
+                      className={`carousel-dot ${activeRecommendationIndex === index ? 'is-active' : ''}`}
+                      aria-label={`${carouselControls.goToRecommendation} ${index + 1}`}
+                      onClick={() => {
+                        setRecommendationIndex(index);
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  type='button'
+                  className='carousel-arrow'
+                  aria-label={carouselControls.nextRecommendation}
+                  onClick={() => {
+                    if (recommendationCount === 0) {
+                      return;
+                    }
+
+                    setRecommendationIndex(
+                      (currentIndex) => {
+                        const boundedIndex = Math.min(
+                          currentIndex,
+                          recommendationMaxIndex,
+                        );
+                        return boundedIndex >= recommendationMaxIndex
+                          ? 0
+                          : boundedIndex + 1;
+                      },
+                    );
+                  }}
+                  disabled={!hasRecommendationCarousel}
+                >
+                  <CarouselArrowIcon direction='right' />
+                </button>
+              </div>
             </div>
           </div>
         </section>
