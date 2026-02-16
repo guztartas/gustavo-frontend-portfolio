@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Manrope, Syne } from "next/font/google";
+import { Sora, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const bodyFont = Manrope({
+const bodyFont = Space_Grotesk({
   variable: "--font-body",
   subsets: ["latin"],
 });
 
-const displayFont = Syne({
+const displayFont = Sora({
   variable: "--font-display",
   subsets: ["latin"],
 });
