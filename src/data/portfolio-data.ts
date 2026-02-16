@@ -35,10 +35,30 @@ export type Recommendation = {
   quote: string;
 };
 
+export type EducationProfile = {
+  degree: string;
+  duration: string;
+  institution: string;
+  context: string;
+  summary: string;
+};
+
+export type AIFocusProfile = {
+  summary: string;
+  automationFocus: string;
+  projectName: string;
+  projectYear: string;
+  projectDescription: string;
+  projectUrl: string;
+  projectCta: string;
+};
+
 export type PortfolioLabels = {
   navigation: {
     impact: string;
     recommendations: string;
+    education: string;
+    ai: string;
     experience: string;
     skills: string;
     contact: string;
@@ -56,6 +76,10 @@ export type PortfolioLabels = {
     recommendationsTag: string;
     recommendationsTitle: string;
     recommendationsSource: string;
+    educationTag: string;
+    educationTitle: string;
+    aiTag: string;
+    aiTitle: string;
     experienceTag: string;
     experienceTitle: string;
     skillsTag: string;
@@ -96,6 +120,8 @@ export type PortfolioLocaleData = {
   metrics: Metric[];
   impact: Impact[];
   recommendations: Recommendation[];
+  education: EducationProfile;
+  aiFocus: AIFocusProfile;
   experiences: Experience[];
   skills: SkillGroup[];
   languages: string[];
@@ -513,6 +539,27 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
       },
     ],
     recommendations: recommendationsEn,
+    education: {
+      degree: 'Bachelor of Computer Science',
+      duration: '5 years',
+      institution: 'URI Erechim University',
+      context:
+        'URI Erechim is the same university where beecrowd (formerly URI Online Judge) was created.',
+      summary:
+        'This academic path strengthened my software engineering fundamentals, algorithmic thinking, and problem-solving discipline.',
+    },
+    aiFocus: {
+      summary:
+        'I am an AI enthusiast and I am always looking for ways to automate as much as possible to increase team performance.',
+      automationFocus:
+        'I use AI in day-to-day engineering workflows to speed up delivery while preserving quality and reliability.',
+      projectName: 'IACancer',
+      projectYear: '2022',
+      projectDescription:
+        'A skin cancer detector project that demonstrates practical AI application in a real healthcare-oriented problem.',
+      projectUrl: 'https://github.com/guztartas/IACancer',
+      projectCta: 'View IACancer on GitHub',
+    },
     experiences: experiencesEn,
     skills: [
       {
@@ -572,6 +619,8 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
       navigation: {
         impact: 'Impact',
         recommendations: 'Recommendations',
+        education: 'Education',
+        ai: 'AI',
         experience: 'Experience',
         skills: 'Skills',
         contact: 'Contact',
@@ -591,6 +640,10 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
           'Recommendations from teammates, leaders, and hiring partners',
         recommendationsSource:
           'All recommendations in this section are also available on my LinkedIn profile.',
+        educationTag: 'Education',
+        educationTitle: 'Academic foundation in Computer Science',
+        aiTag: 'AI mindset',
+        aiTitle: 'Automation-first approach with AI',
         experienceTag: 'Career timeline',
         experienceTitle: 'Experience shaping high-traffic products',
         skillsTag: 'Toolkit',
@@ -701,6 +754,27 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
       },
     ],
     recommendations: recommendationsPt,
+    education: {
+      degree: 'Bacharelado em Ciência da Computação',
+      duration: '5 anos',
+      institution: 'Universidade URI Erechim',
+      context:
+        'A URI Erechim é a mesma universidade onde nasceu o beecrowd (antigo URI Online Judge).',
+      summary:
+        'Essa formação fortaleceu minha base em engenharia de software, pensamento algorítmico e resolução de problemas complexos.',
+    },
+    aiFocus: {
+      summary:
+        'Sou entusiasta por IA e estou sempre buscando automatizar o que for possível para aumentar a performance do time.',
+      automationFocus:
+        'Uso IA no fluxo de engenharia do dia a dia para acelerar entregas sem abrir mão de qualidade e confiabilidade.',
+      projectName: 'IACancer',
+      projectYear: '2022',
+      projectDescription:
+        'Projeto de detector de câncer de pele que desenvolvi para aplicar IA em um problema real orientado à saúde.',
+      projectUrl: 'https://github.com/guztartas/IACancer',
+      projectCta: 'Ver IACancer no GitHub',
+    },
     experiences: experiencesPt,
     skills: [
       {
@@ -760,6 +834,8 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
       navigation: {
         impact: 'Impacto',
         recommendations: 'Indicações',
+        education: 'Formação',
+        ai: 'IA',
         experience: 'Experiência',
         skills: 'Skills',
         contact: 'Contato',
@@ -779,6 +855,10 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
           'Indicações de colegas, lideranças e parceiros de contratação',
         recommendationsSource:
           'Todas as indicações desta seção também estão disponíveis no meu perfil do LinkedIn.',
+        educationTag: 'Formação',
+        educationTitle: 'Base acadêmica em Ciência da Computação',
+        aiTag: 'Entusiasta de IA',
+        aiTitle: 'Automação com IA para elevar performance',
         experienceTag: 'Linha do tempo',
         experienceTitle: 'Experiência em produtos de alto tráfego',
         skillsTag: 'Ferramentas',

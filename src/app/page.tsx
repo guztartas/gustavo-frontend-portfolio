@@ -267,6 +267,8 @@ export default function Home() {
         href: '#recommendations',
         label: content.labels.navigation.recommendations,
       },
+      { href: '#education', label: content.labels.navigation.education },
+      { href: '#ai', label: content.labels.navigation.ai },
       { href: '#experience', label: content.labels.navigation.experience },
       { href: '#skills', label: content.labels.navigation.skills },
       { href: '#contact', label: content.labels.navigation.contact },
@@ -718,6 +720,88 @@ export default function Home() {
                 </button>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section id='education'>
+          <div className='container'>
+            <div
+              className={sectionIntroClass}
+              data-reveal
+              style={revealStyle(100)}
+            >
+              <p className='section-tag'>
+                {content.labels.sections.educationTag}
+              </p>
+              <h2 className='display-font text-3xl leading-tight sm:text-4xl'>
+                {content.labels.sections.educationTitle}
+              </h2>
+            </div>
+
+            <article className='story-panel mt-12' data-reveal style={revealStyle(170)}>
+              <div className='story-halo story-halo-education' aria-hidden />
+              <div className='story-content'>
+                <div className='story-badge'>
+                  <p className='story-badge-value display-font'>
+                    {content.education.duration}
+                  </p>
+                  <p className='story-badge-label'>{content.education.degree}</p>
+                </div>
+
+                <div className='space-y-4'>
+                  <h3 className='display-font text-2xl text-[var(--text-primary)]'>
+                    {content.education.institution}
+                  </h3>
+                  <p className='story-copy'>{content.education.context}</p>
+                  <p className='story-copy'>{content.education.summary}</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id='ai'>
+          <div className='container'>
+            <div
+              className={sectionIntroClass}
+              data-reveal
+              style={revealStyle(100)}
+            >
+              <p className='section-tag'>{content.labels.sections.aiTag}</p>
+              <h2 className='display-font text-3xl leading-tight sm:text-4xl'>
+                {content.labels.sections.aiTitle}
+              </h2>
+            </div>
+
+            <article className='story-panel story-panel-ai mt-12' data-reveal style={revealStyle(170)}>
+              <div className='story-halo story-halo-ai' aria-hidden />
+              <div className='story-content'>
+                <div className='space-y-4'>
+                  <p className='story-copy'>{content.aiFocus.summary}</p>
+                  <p className='story-copy'>{content.aiFocus.automationFocus}</p>
+                  <a
+                    href={content.aiFocus.projectUrl}
+                    target='_blank'
+                    rel='noreferrer'
+                    className='story-link'
+                  >
+                    {content.aiFocus.projectCta}
+                  </a>
+                </div>
+
+                <div className='ai-proof'>
+                  <p className='ai-proof-year display-font'>
+                    {content.aiFocus.projectYear}
+                  </p>
+                  <h3 className='display-font text-2xl text-[var(--text-primary)]'>
+                    {content.aiFocus.projectName}
+                  </h3>
+                  <p className='story-copy'>
+                    {content.aiFocus.projectDescription}
+                  </p>
+                </div>
+              </div>
+            </article>
           </div>
         </section>
 
