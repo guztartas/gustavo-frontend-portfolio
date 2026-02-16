@@ -864,6 +864,17 @@ main section {
     width: min(100%, 23rem);
   }
 
+  .primary-cta,
+  .secondary-cta {
+    padding: 0.58rem 0.9rem;
+    font-size: 0.86rem;
+  }
+
+  .chip-link {
+    padding: 0.42rem 0.72rem;
+    font-size: 0.78rem;
+  }
+
   .timeline-meta {
     text-align: left;
   }

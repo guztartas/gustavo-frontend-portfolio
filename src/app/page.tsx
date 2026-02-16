@@ -359,12 +359,8 @@ export default function Home() {
 
         <section id='top' className='pt-10 md:pt-16'>
           <div className='container'>
-            <div className='grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center'>
+            <div className='grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start'>
               <div className='space-y-8'>
-                <div className='eyebrow' data-reveal style={revealStyle(100)}>
-                  {content.person.role} • {content.person.location}
-                </div>
-
                 <div className='space-y-6' data-reveal style={revealStyle(170)}>
                   <h1 className='display-font text-4xl leading-tight tracking-tight text-[var(--text-primary)] sm:text-5xl lg:text-7xl'>
                     <span className='text-gradient'>
@@ -387,7 +383,7 @@ export default function Home() {
                 </p>
 
                 <div
-                  className='flex flex-wrap gap-4'
+                  className='flex flex-wrap gap-2 sm:gap-4'
                   data-reveal
                   style={revealStyle(290)}
                 >
@@ -405,7 +401,7 @@ export default function Home() {
                 </div>
 
                 <div
-                  className='flex flex-wrap gap-3'
+                  className='flex flex-wrap gap-2 sm:gap-3'
                   data-reveal
                   style={revealStyle(340)}
                 >
@@ -434,9 +430,19 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className='relative' data-reveal style={revealStyle(170)}>
-                <div className='photo-glow' aria-hidden />
-                <ProfilePhoto />
+              <div
+                className='relative grid gap-5 justify-items-center'
+                data-reveal
+                style={revealStyle(170)}
+              >
+                <p className='eyebrow'>
+                  {content.person.role} • {content.person.location}
+                </p>
+
+                <div className='relative w-full'>
+                  <div className='photo-glow' aria-hidden />
+                  <ProfilePhoto />
+                </div>
               </div>
             </div>
 
@@ -516,17 +522,15 @@ export default function Home() {
                         return;
                       }
 
-                      setImpactIndex(
-                        (currentIndex) => {
-                          const boundedIndex = Math.min(
-                            currentIndex,
-                            impactMaxIndex,
-                          );
-                          return boundedIndex <= 0
-                            ? impactMaxIndex
-                            : boundedIndex - 1;
-                        },
-                      );
+                      setImpactIndex((currentIndex) => {
+                        const boundedIndex = Math.min(
+                          currentIndex,
+                          impactMaxIndex,
+                        );
+                        return boundedIndex <= 0
+                          ? impactMaxIndex
+                          : boundedIndex - 1;
+                      });
                     }}
                     disabled={!hasImpactCarousel}
                   >
@@ -556,17 +560,15 @@ export default function Home() {
                         return;
                       }
 
-                      setImpactIndex(
-                        (currentIndex) => {
-                          const boundedIndex = Math.min(
-                            currentIndex,
-                            impactMaxIndex,
-                          );
-                          return boundedIndex >= impactMaxIndex
-                            ? 0
-                            : boundedIndex + 1;
-                        },
-                      );
+                      setImpactIndex((currentIndex) => {
+                        const boundedIndex = Math.min(
+                          currentIndex,
+                          impactMaxIndex,
+                        );
+                        return boundedIndex >= impactMaxIndex
+                          ? 0
+                          : boundedIndex + 1;
+                      });
                     }}
                     disabled={!hasImpactCarousel}
                   >
@@ -662,17 +664,15 @@ export default function Home() {
                       return;
                     }
 
-                    setRecommendationIndex(
-                      (currentIndex) => {
-                        const boundedIndex = Math.min(
-                          currentIndex,
-                          recommendationMaxIndex,
-                        );
-                        return boundedIndex <= 0
-                          ? recommendationMaxIndex
-                          : boundedIndex - 1;
-                      },
-                    );
+                    setRecommendationIndex((currentIndex) => {
+                      const boundedIndex = Math.min(
+                        currentIndex,
+                        recommendationMaxIndex,
+                      );
+                      return boundedIndex <= 0
+                        ? recommendationMaxIndex
+                        : boundedIndex - 1;
+                    });
                   }}
                   disabled={!hasRecommendationCarousel}
                 >
@@ -702,17 +702,15 @@ export default function Home() {
                       return;
                     }
 
-                    setRecommendationIndex(
-                      (currentIndex) => {
-                        const boundedIndex = Math.min(
-                          currentIndex,
-                          recommendationMaxIndex,
-                        );
-                        return boundedIndex >= recommendationMaxIndex
-                          ? 0
-                          : boundedIndex + 1;
-                      },
-                    );
+                    setRecommendationIndex((currentIndex) => {
+                      const boundedIndex = Math.min(
+                        currentIndex,
+                        recommendationMaxIndex,
+                      );
+                      return boundedIndex >= recommendationMaxIndex
+                        ? 0
+                        : boundedIndex + 1;
+                    });
                   }}
                   disabled={!hasRecommendationCarousel}
                 >
@@ -738,14 +736,20 @@ export default function Home() {
               </h2>
             </div>
 
-            <article className='story-panel mt-12' data-reveal style={revealStyle(170)}>
+            <article
+              className='story-panel mt-12'
+              data-reveal
+              style={revealStyle(170)}
+            >
               <div className='story-halo story-halo-education' aria-hidden />
               <div className='story-content'>
                 <div className='story-badge'>
                   <p className='story-badge-value display-font'>
                     {content.education.duration}
                   </p>
-                  <p className='story-badge-label'>{content.education.degree}</p>
+                  <p className='story-badge-label'>
+                    {content.education.degree}
+                  </p>
                 </div>
 
                 <div className='space-y-4'>
@@ -773,12 +777,18 @@ export default function Home() {
               </h2>
             </div>
 
-            <article className='story-panel story-panel-ai mt-12' data-reveal style={revealStyle(170)}>
+            <article
+              className='story-panel story-panel-ai mt-12'
+              data-reveal
+              style={revealStyle(170)}
+            >
               <div className='story-halo story-halo-ai' aria-hidden />
               <div className='story-content'>
                 <div className='space-y-4'>
                   <p className='story-copy'>{content.aiFocus.summary}</p>
-                  <p className='story-copy'>{content.aiFocus.automationFocus}</p>
+                  <p className='story-copy'>
+                    {content.aiFocus.automationFocus}
+                  </p>
                   <a
                     href={content.aiFocus.projectUrl}
                     target='_blank'
