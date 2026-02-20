@@ -364,7 +364,7 @@ const recommendationsEn: Recommendation[] = [
   {
     name: 'Tyler Butler',
     role: 'Software Engineer 2 at The Home Depot',
-    relation: 'Worked with Gustavo on the same team',
+    relation: 'Worked with me on the same team',
     quote:
       'Innovative, dedicated, and collaborative. Gustavo consistently delivered customer-facing React features with high quality and strong engineering rigor.',
   },
@@ -378,14 +378,14 @@ const recommendationsEn: Recommendation[] = [
   {
     name: 'Haile Lakew',
     role: 'Senior Software Engineer',
-    relation: 'Worked with Gustavo on the same team',
+    relation: 'Worked with me on the same team',
     quote:
       'He was lightning fast onboarding into complex tasks and helped improve quality and delivery speed while increasing team capacity.',
   },
   {
     name: 'George Guffey',
     role: 'Senior Software Engineer at The Home Depot',
-    relation: 'Worked with Gustavo on the same team',
+    relation: 'Worked with me on the same team',
     quote:
       'Working with Gustavo was a pleasure. He communicates clearly, learns quickly, and provides valuable input in technical decision-making.',
   },
@@ -394,21 +394,21 @@ const recommendationsEn: Recommendation[] = [
     role: 'Tech Recruiter | Talent Acquisition',
     relation: 'Hired Gustavo for a major project',
     quote:
-      "Throughout the process, Gustavo showed commitment, professionalism, and strong frontend ownership with a consistent growth mindset.",
+      'Throughout the process, Gustavo showed commitment, professionalism, and strong frontend ownership with a consistent growth mindset.',
   },
   {
     name: 'Junior Maran',
     role: 'Frontend Software Engineer',
-    relation: 'Worked with Gustavo on the same team',
+    relation: 'Worked with me on the same team',
     quote:
-      "A dedicated professional, always willing to support colleagues and share knowledge. His quality standard stood out on every delivery.",
+      'A dedicated professional, always willing to support colleagues and share knowledge. His quality standard stood out on every delivery.',
   },
   {
     name: 'Mateus Badalotti',
     role: 'Senior Software Engineer',
     relation: 'Collaborated in multiple projects',
     quote:
-      "Gustavo demonstrates proactivity, adaptability, and teamwork. He communicates effectively and keeps evolving with every challenge.",
+      'Gustavo demonstrates proactivity, adaptability, and teamwork. He communicates effectively and keeps evolving with every challenge.',
   },
 ];
 
