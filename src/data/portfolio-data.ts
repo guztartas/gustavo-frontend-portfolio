@@ -371,7 +371,7 @@ const recommendationsEn: Recommendation[] = [
   {
     name: 'Mike Kerfeld',
     role: 'Sr. Product Manager at The Home Depot',
-    relation: 'Partnered cross-functionally with Gustavo',
+    relation: 'Partnered cross-functionally with me',
     quote:
       'Gustavo showed up every day ready to contribute. He produced not only solid software but also technical guidance when challenges came up.',
   },
@@ -392,7 +392,7 @@ const recommendationsEn: Recommendation[] = [
   {
     name: 'Grazielli Padilha Vieira',
     role: 'Tech Recruiter | Talent Acquisition',
-    relation: 'Hired Gustavo for a major project',
+    relation: 'Hired me for a major project',
     quote:
       'Throughout the process, Gustavo showed commitment, professionalism, and strong frontend ownership with a consistent growth mindset.',
   },
@@ -416,7 +416,7 @@ const recommendationsPt: Recommendation[] = [
   {
     name: 'Tyler Butler',
     role: 'Software Engineer 2 no The Home Depot',
-    relation: 'Trabalhou com Gustavo no mesmo time',
+    relation: 'Trabalhou comigo no mesmo time',
     quote:
       'Inovador, dedicado e colaborativo. O Gustavo entregou features em React com qualidade alta e rigor de engenharia constante.',
   },
@@ -430,28 +430,28 @@ const recommendationsPt: Recommendation[] = [
   {
     name: 'Haile Lakew',
     role: 'Senior Software Engineer',
-    relation: 'Trabalhou com Gustavo no mesmo time',
+    relation: 'Trabalhou comigo no mesmo time',
     quote:
       'Teve onboarding muito rápido em tarefas complexas e ajudou o time a melhorar qualidade, velocidade de entrega e capacidade técnica.',
   },
   {
     name: 'George Guffey',
     role: 'Senior Software Engineer no The Home Depot',
-    relation: 'Trabalhou com Gustavo no mesmo time',
+    relation: 'Trabalhou comigo no mesmo time',
     quote:
       'Trabalhar com Gustavo foi um prazer. Comunicação forte, aprendizado rápido e contribuições valiosas em decisões técnicas.',
   },
   {
     name: 'Grazielli Padilha Vieira',
     role: 'Tech Recruiter | Talent Acquisition',
-    relation: 'Responsável pela contratação de Gustavo',
+    relation: 'Responsável pela contratação minha',
     quote:
       'Durante todo o processo, Gustavo demonstrou profissionalismo, compromisso e forte responsabilidade técnica no frontend.',
   },
   {
     name: 'Junior Maran',
     role: 'Frontend Software Engineer',
-    relation: 'Trabalhou com Gustavo no mesmo time',
+    relation: 'Trabalhou comigo no mesmo time',
     quote:
       'Profissional dedicado, sempre disposto a apoiar colegas e compartilhar conhecimento. O padrão de qualidade nas entregas sempre se destacou.',
   },
