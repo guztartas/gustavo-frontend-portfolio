@@ -197,7 +197,8 @@ const experiencesEn: Experience[] = [
       'Mentored junior engineers and guided architectural standards and frontend quality.',
     ],
     stack: [
-      'React',
+      'React.js',
+      'Next.js',
       'Redux-Saga',
       'Bootstrap',
       'Node.js',
@@ -220,7 +221,7 @@ const experiencesEn: Experience[] = [
       'Maintained legacy and modern stacks simultaneously while improving responsiveness and reliability.',
     ],
     stack: [
-      'React',
+      'React.js',
       'Next.js',
       'Node.js',
       'Express',
@@ -299,7 +300,8 @@ const experiencesPt: Experience[] = [
       'Mentoria de desenvolvedores juniores e definição de padrões de arquitetura e qualidade frontend.',
     ],
     stack: [
-      'React',
+      'React.js',
+      'Next.js',
       'Redux-Saga',
       'Bootstrap',
       'Node.js',
@@ -322,7 +324,7 @@ const experiencesPt: Experience[] = [
       'Sustentação simultânea de stack legada e moderna com foco em responsividade e confiabilidade.',
     ],
     stack: [
-      'React',
+      'React.js',
       'Next.js',
       'Node.js',
       'Express',
