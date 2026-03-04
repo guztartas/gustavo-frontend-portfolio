@@ -815,6 +815,74 @@ export default function Home() {
           </div>
         </section>
 
+        <section id='problem-solving'>
+          <div className='container'>
+            <div
+              className={sectionIntroClass}
+              data-reveal
+              style={revealStyle(100)}
+            >
+              <p className='section-tag'>
+                {content.labels.sections.problemSolvingTag}
+              </p>
+              <h2 className='display-font text-3xl leading-tight sm:text-4xl'>
+                {content.labels.sections.problemSolvingTitle}
+              </h2>
+            </div>
+
+            <article
+              className='story-panel mt-12'
+              data-reveal
+              style={revealStyle(170)}
+            >
+              <div className='story-content story-content-single'>
+                <p className='story-copy story-copy-lead'>
+                  {content.problemSolving.summary}
+                </p>
+                <ul className='value-list'>
+                  {content.problemSolving.highlights.map((highlight) => (
+                    <li key={highlight}>{highlight}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id='responsibility'>
+          <div className='container'>
+            <div
+              className={sectionIntroClass}
+              data-reveal
+              style={revealStyle(100)}
+            >
+              <p className='section-tag'>
+                {content.labels.sections.responsibilityTag}
+              </p>
+              <h2 className='display-font text-3xl leading-tight sm:text-4xl'>
+                {content.labels.sections.responsibilityTitle}
+              </h2>
+            </div>
+
+            <article
+              className='story-panel story-panel-ai mt-12'
+              data-reveal
+              style={revealStyle(170)}
+            >
+              <div className='story-content story-content-single'>
+                <p className='story-copy story-copy-lead'>
+                  {content.responsibilityMindset.summary}
+                </p>
+                <ul className='value-list'>
+                  {content.responsibilityMindset.highlights.map((highlight) => (
+                    <li key={highlight}>{highlight}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          </div>
+        </section>
+
         <section id='experience'>
           <div className='container'>
             <div

@@ -53,6 +53,11 @@ export type AIFocusProfile = {
   projectCta: string;
 };
 
+export type ValueSectionProfile = {
+  summary: string;
+  highlights: string[];
+};
+
 export type PortfolioLabels = {
   navigation: {
     impact: string;
@@ -80,6 +85,10 @@ export type PortfolioLabels = {
     educationTitle: string;
     aiTag: string;
     aiTitle: string;
+    problemSolvingTag: string;
+    problemSolvingTitle: string;
+    responsibilityTag: string;
+    responsibilityTitle: string;
     experienceTag: string;
     experienceTitle: string;
     skillsTag: string;
@@ -122,6 +131,8 @@ export type PortfolioLocaleData = {
   recommendations: Recommendation[];
   education: EducationProfile;
   aiFocus: AIFocusProfile;
+  problemSolving: ValueSectionProfile;
+  responsibilityMindset: ValueSectionProfile;
   experiences: Experience[];
   skills: SkillGroup[];
   languages: string[];
@@ -562,6 +573,24 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
       projectUrl: 'https://github.com/guztartas/IACancer',
       projectCta: 'View IACancer on GitHub',
     },
+    problemSolving: {
+      summary:
+        'I am highly effective at finding and fixing problems quickly, especially when production incidents require rapid and accurate troubleshooting.',
+      highlights: [
+        'I investigate end-to-end with urgency while preserving technical quality.',
+        'I move from symptom to root cause fast and unblock teams under pressure.',
+        'I convert incidents into preventive improvements to reduce recurrence.',
+      ],
+    },
+    responsibilityMindset: {
+      summary:
+        'Responsibility and clear communication are core to how I work with teams and stakeholders.',
+      highlights: [
+        'I keep ownership from discovery to delivery and make risks explicit early.',
+        'I work with growth mindset, positive attitude, and steady collaboration.',
+        'I communicate status, trade-offs, and next steps clearly in high-impact contexts.',
+      ],
+    },
     experiences: experiencesEn,
     skills: [
       {
@@ -646,6 +675,10 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
         educationTitle: 'Academic foundation in Computer Science',
         aiTag: 'AI mindset',
         aiTitle: 'Automation-first approach with AI',
+        problemSolvingTag: 'Production problem-solving',
+        problemSolvingTitle: 'Fast troubleshooting and reliable incident response',
+        responsibilityTag: 'Team dynamics',
+        responsibilityTitle: 'Responsibility, communication, and growth mindset',
         experienceTag: 'Career timeline',
         experienceTitle: 'Experience shaping high-traffic products',
         skillsTag: 'Toolkit',
@@ -777,6 +810,24 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
       projectUrl: 'https://github.com/guztartas/IACancer',
       projectCta: 'Ver IACancer no GitHub',
     },
+    problemSolving: {
+      summary:
+        'Sou muito bom em encontrar e consertar problemas rapidamente, principalmente em incidentes de produção que exigem troubleshooting preciso.',
+      highlights: [
+        'Atuo com senso de urgência sem abrir mão de análise técnica consistente.',
+        'Vou do sintoma à causa raiz com velocidade para destravar o time.',
+        'Transformo incidentes em melhorias preventivas para reduzir recorrência.',
+      ],
+    },
+    responsibilityMindset: {
+      summary:
+        'Responsabilidade e comunicação clara são pilares da minha forma de trabalho.',
+      highlights: [
+        'Tenho growth mindset e positive attitude, inclusive em cenários de pressão.',
+        'Assumo ownership das entregas e mantenho alinhamento entre times e stakeholders.',
+        'Comunico riscos, decisões técnicas e próximos passos com objetividade.',
+      ],
+    },
     experiences: experiencesPt,
     skills: [
       {
@@ -861,6 +912,11 @@ export const portfolioDataByLocale: Record<Locale, PortfolioLocaleData> = {
         educationTitle: 'Base acadêmica em Ciência da Computação',
         aiTag: 'Entusiasta de IA',
         aiTitle: 'Automação com IA para elevar performance',
+        problemSolvingTag: 'Resolução de problemas',
+        problemSolvingTitle: 'Troubleshooting rápido em produção',
+        responsibilityTag: 'Postura profissional',
+        responsibilityTitle:
+          'Responsabilidade, comunicação e mentalidade de crescimento',
         experienceTag: 'Linha do tempo',
         experienceTitle: 'Experiência em produtos de alto tráfego',
         skillsTag: 'Ferramentas',
